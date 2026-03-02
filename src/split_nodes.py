@@ -11,23 +11,40 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
         
 
         delimiter_start = False
-        delimter_texts = []
+        delimiter_found = False
+        delimiter_texts = []
         text = ""
 
         d_len = len(delimiter)
 
-        for i in range(0, len(old_node.text), d_len):
-            if old_node.text[i:i+d_len] == delimiter:
-                delimter_texts.append((text, delimiter_start))
+        num = 0
+        while num < len(old_node.text):
+            extra = 0
+
+            if d_len == 1 and old_node.text[num] == delimiter:
+                    delimiter_found = True
+            elif d_len == 2 and num + 1 < len(old_node.text) and old_node.text[num:num+d_len] == delimiter:
+                    delimiter_found = True
+                    num += 2
+            
+            if delimiter_found:
+                delimiter_found = False
+                delimiter_texts.append((text, delimiter_start))
                 text = ""
                 delimiter_start = not delimiter_start
-            text += old_node.text[i:i+d_len]
-        delimter_texts.append((text, delimiter_start))
+
+            if num >= len(old_node.text):
+                break
+            text += old_node.text[num]
+
+            num += 1
+
+        delimiter_texts.append((text, delimiter_start))
 
         if delimiter_start:
             raise Exception("Missing closing delimiter")
         
-        for split_text in delimter_texts:
+        for split_text in delimiter_texts:
             clean = "".join(split_text[0].split(delimiter))
 
             new_node = None
