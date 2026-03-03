@@ -30,10 +30,13 @@ def markdown_to_html_node(markdown):
         elif b_type == BlockType.QUOTE:
             children.extend(text_to_quote_children(block))
             html_nodes.append(ParentNode(tag, children))
+
+        elif b_type == BlockType.HEADING:
+            children.extend(text_to_heading_children(block, tag))
+            html_nodes.append(ParentNode(tag, children))
+
         else:
-            if len(tag) > 1:
-                block = block[int(tag[1]) + 2:]
-            children.extend(text_to_children(block))
+            children.extend(text_to_paragraph_children(block))
             html_nodes.append(ParentNode(tag, children))
 
 
@@ -74,8 +77,18 @@ def block_to_tag(block, b_type):
         
     return tag
 
-def text_to_children(text):
+def text_to_paragraph_children(text):
     textnodes = text_to_textnodes(" ".join(text.split('\n')))
+    children = []
+    for textnode in textnodes:
+        children.append(text_node_to_html_node(textnode))
+    
+    return children
+
+def text_to_heading_children(text, tag):
+    if len(tag) > 1:
+        block = text[int(tag[1]) + 2:]
+    textnodes = text_to_textnodes(block)
     children = []
     for textnode in textnodes:
         children.append(text_node_to_html_node(textnode))
