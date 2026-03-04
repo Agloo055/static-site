@@ -28,7 +28,7 @@ def text_node_to_html_node(text_node):
             raise Exception("Invalid text_type")
     
     if is_image:
-        leaf = LeafNode(tag, None, props=props)
+        leaf = LeafNode(tag, "", props=props)
     else:
         leaf = LeafNode(tag, text_node.text, props)
     

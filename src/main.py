@@ -2,13 +2,14 @@ from textnode import TextNode, TextType
 import os
 import shutil
 
+from generate_page import generate_page
+
 def main():
-    # text_type = TextType
-    # temp = TextNode("This is some anchor text", text_type.LINK, "http://www.boot.dev")
-
-    # print(temp)
-
     copy_directory('static','public')
+
+    generate_page('content/index.md','template.html','public/index.html')
+
+
 
 
 def copy_directory(original_directory, final_directory):

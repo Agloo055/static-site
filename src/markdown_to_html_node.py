@@ -87,7 +87,7 @@ def text_to_paragraph_children(text):
 
 def text_to_heading_children(text, tag):
     if len(tag) > 1:
-        block = text[int(tag[1]) + 2:]
+        block = text[int(tag[1]) + 1:]
     textnodes = text_to_textnodes(block)
     children = []
     for textnode in textnodes:

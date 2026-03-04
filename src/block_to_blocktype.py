@@ -10,7 +10,7 @@ class BlockType(Enum):
     ORDERED_LIST = 'ordered_list'
 
 def block_to_blocktype(block):
-    if re.match(r'\#{1,6} \n', block):
+    if re.match(r'\#{1,6} ', block):
         return BlockType.HEADING
     
     elif block.startswith('```\n') and block.endswith('```'):
