@@ -3,6 +3,25 @@ from markdown_to_html_node import markdown_to_html_node
 
 import os
 
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    content_list = os.listdir(dir_path_content)
+
+    if content_list == []:
+        return
+    
+    for item in content_list:
+        content_path = os.path.join(dir_path_content,item)
+        dest_path = os.path.join(dest_dir_path, item)
+
+        if os.path.isdir(content_path):
+            generate_pages_recursive(content_path, template_path, dest_path)
+        else:
+            dest_path = dest_path.replace('md', 'html')
+            generate_page(content_path, template_path, dest_path)
+
+    
+
+
 def generate_page(from_path, template_path, dest_path):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     markdown = ""
