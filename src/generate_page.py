@@ -3,7 +3,7 @@ from markdown_to_html_node import markdown_to_html_node
 
 import os
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath):
     content_list = os.listdir(dir_path_content)
 
     if content_list == []:
@@ -14,15 +14,15 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
         dest_path = os.path.join(dest_dir_path, item)
 
         if os.path.isdir(content_path):
-            generate_pages_recursive(content_path, template_path, dest_path)
+            generate_pages_recursive(content_path, template_path, dest_path, basepath)
         else:
             dest_path = dest_path.replace('md', 'html')
-            generate_page(content_path, template_path, dest_path)
+            generate_page(content_path, template_path, dest_path, basepath)
 
     
 
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     markdown = ""
     template = ""
@@ -46,6 +46,7 @@ def generate_page(from_path, template_path, dest_path):
 
     content = ""
     content = template.replace("{{ Title }}", title).replace("{{ Content }}",html)
+    content = content.replace('href="/', f'href="{basepath}').replace('src="/', f'src="{basepath}')
 
     try:
         path, file = dest_path.rsplit('/', 1)

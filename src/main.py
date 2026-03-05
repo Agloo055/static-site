@@ -1,13 +1,17 @@
 from textnode import TextNode, TextType
 import os
 import shutil
+import sys
 
 from generate_page import generate_pages_recursive
 
 def main():
-    copy_directory('static','public')
+    cli_arg = sys.argv
+    basepath = '/' if len(cli_arg) == 0 else cli_arg[0]
 
-    generate_pages_recursive('content','template.html','public')
+    copy_directory('static','docs')
+
+    generate_pages_recursive('content','template.html','docs',basepath)
 
     # generate_page('content/index.md','template.html','public/index.html')
     # generate_page('content/blog/glorfindel/index.md','template.html','public/blog/glorfindel/index.md')
@@ -19,6 +23,9 @@ def main():
 
 
 def copy_directory(original_directory, final_directory):
+    if not os.path.exists(final_directory):
+        os.makedirs(final_directory)
+
     delete_directory_helper(final_directory, os.listdir(final_directory))
 
     copy_directory_helper(original_directory, final_directory, os.listdir(original_directory))
