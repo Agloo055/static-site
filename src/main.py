@@ -7,7 +7,8 @@ from generate_page import generate_pages_recursive
 
 def main():
     cli_arg = sys.argv
-    basepath = '/' if len(cli_arg) == 0 else cli_arg[0]
+    print(cli_arg)
+    basepath = '/' if len(cli_arg) < 2 else cli_arg[1]
 
     copy_directory('static','docs')
 
